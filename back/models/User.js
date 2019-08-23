@@ -37,4 +37,14 @@ UserSchema.methods.generateJWT = function () {
   }, secret);
 };
 
+UserSchema.methods.toAuthJSON = function () {
+  return {
+    username: this.username,
+    email: this.email,
+    token: this.generateJWT(),
+    bio: this.bio,
+    image: this.image
+  };
+};
+
 mongoose.model('User', UserSchema);
