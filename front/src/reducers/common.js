@@ -35,6 +35,7 @@ export default (state = defaultState, action) => {
       };
     case 'DELETE_ARTICLE':
       return { ...state, redirectTo: '/' };
+    default:
+      return state;
   }
-  return state;
 };

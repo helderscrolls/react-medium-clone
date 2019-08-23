@@ -1,5 +1,4 @@
 import React from 'react';
-import agent from '../agent';
 
 const ListPagination = props => {
   if (props.articlesCount <= 10) {

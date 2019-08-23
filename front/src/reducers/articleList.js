@@ -1,5 +1,3 @@
-'use strict';
-
 export default (state = {}, action) => {
   switch (action.type) {
     case 'HOME_PAGE_LOADED':
@@ -37,6 +35,21 @@ export default (state = {}, action) => {
         tag: action.tag,
         currentPage: 0
       };
+    case 'ARTICLE_FAVORITED':
+    case 'ARTICLE_UNFAVORITED':
+      return {
+        ...state,
+        articles: state.articles.map(article => {
+          if (article.slug === action.payload.article.slug) {
+            return {
+              ...article,
+              favorited: action.payload.article.favorited,
+              favoritesCount: action.payload.article.favoritesCount
+            };
+          }
+          return article;
+        })
+      };
     case 'PROFILE_PAGE_LOADED':
     case 'PROFILE_FAVORITES_PAGE_LOADED':
       return {
@@ -48,7 +61,7 @@ export default (state = {}, action) => {
     case 'PROFILE_PAGE_UNLOADED':
     case 'PROFILE_FAVORITES_PAGE_UNLOADED':
       return {};
+    default:
+      return state;
   }
-
-  return state;
 };

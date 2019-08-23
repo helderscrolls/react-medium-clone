@@ -11,7 +11,7 @@ export default (state = {}, action) => {
         ...state,
         inProgress: true
       };
+    default:
+      return state;
   }
-
-  return state;
 };

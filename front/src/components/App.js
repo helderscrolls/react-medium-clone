@@ -1,5 +1,5 @@
 import Header from './Header';
-import Home from './Home';
+import PropTypes from 'prop-types';
 import React from 'react';
 import agent from '../agent';
 import { connect } from 'react-redux';
@@ -57,7 +57,7 @@ class App extends React.Component {
 }
 
 App.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
