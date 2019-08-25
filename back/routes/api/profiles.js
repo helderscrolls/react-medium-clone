@@ -13,4 +13,8 @@ router.param('username', function (req, res, next, username) {
   }).catch(next);
 });
 
+router.get('/:username', auth.optional, function (req, res, next) {
+  return res.json({ profile: req.profile.toProfileJSONFor() });
+});
+
 module.exports = router;
