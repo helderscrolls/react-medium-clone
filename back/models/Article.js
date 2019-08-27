@@ -11,7 +11,7 @@ var ArticleSchema = new mongoose.Schema({
   favoritesCount: { type: Number, default: 0 },
   tagList: [{ type: String }],
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-}, { timestamps: true });
+}, { timestamps: true, usePushEach: true });
 
 ArticleSchema.plugin(uniqueValidator, { message: 'is already taken' });
 
@@ -27,6 +27,15 @@ ArticleSchema.methods.slugify = function () {
   this.slug = slug(this.title) + '-' + (Math.random() * Math.pow(36, 6) | 0).toString(36);
 };
 
+ArticleSchema.methods.updateFavoriteCount = function () {
+  var article = this;
+
+  return User.count({ favorites: { $in: [article._id] } }).then(function (count) {
+    article.favoritesCount = count;
+
+    return article.save();
+  });
+};
 
 ArticleSchema.methods.toJSONFor = function (user) {
   return {
@@ -43,14 +52,5 @@ ArticleSchema.methods.toJSONFor = function (user) {
   };
 };
 
-ArticleSchema.methods.updateFavoriteCount = function () {
-  var article = this;
-
-  return User.count({ favorites: { $in: [article._id] } }).then(function () {
-    article.favoritesCount = count;
-
-    return article.save();
-  });
-};
 
 mongoose.model('Article', ArticleSchema);
