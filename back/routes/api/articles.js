@@ -9,7 +9,7 @@ router.post('/', auth.required, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     if (!user) { return res.sendStatus(401); }
 
-    var Article = new Article(req.body.article);
+    var article = new Article(req.body.article);
 
     article.author = user;
 
@@ -20,6 +20,17 @@ router.post('/', auth.required, function (req, res, next) {
   }).catch(next);
 });
 
+router.param('article', function (req, res, next, slug) {
+  Article.findOne({ slug: slug })
+    .populate('author')
+    .then(function (article) {
+      if (!article) { return res.sendStatus(404); }
+
+      req.article = article;
+
+      return next();
+    }).catch(next);
+});
 
 
 module.exports = router;
