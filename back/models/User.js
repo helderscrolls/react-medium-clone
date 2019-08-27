@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var uniqueVaildator = require('mongoose-unique-validator');
+var uniqueValidator = require('mongoose-unique-validator');
 var crypto = require('crypto');
 var jwt = require('jsonwebtoken');
 var secret = require('../config').secret;
@@ -10,20 +10,21 @@ var UserSchema = new mongoose.Schema({
   bio: String,
   image: String,
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   hash: String,
   salt: String
-}, { timestamps: true });
+}, { timestamps: true, usePushEach: true });
 
-UserSchema.plugin(uniqueVaildator, { message: 'is already taken.' });
-
-UserSchema.methods.setPassword = function (password) {
-  this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
-};
+UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
 
 UserSchema.methods.validPassword = function (password) {
   var hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
   return this.hash === hash;
+};
+
+UserSchema.methods.setPassword = function (password) {
+  this.salt = crypto.randomBytes(16).toString('hex');
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 10000, 512, 'sha512').toString('hex');
 };
 
 UserSchema.methods.generateJWT = function () {
