@@ -1864,7 +1864,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\"user\":{\"email\":\"celeb_{{EMAIL}}\", \"password\":\"{{PASSWORD}}\", \"username\":\"celeb_{{USERNAME}}\"}}"
+							"raw": "{\"user\":{\"email\":\"celeb{{EMAIL}}\", \"password\":\"{{PASSWORD}}\", \"username\":\"celeb{{USERNAME}}\"}}"
 						},
 						"url": {
 							"raw": "{{APIURL}}/users",
@@ -1930,13 +1930,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APIURL}}/profiles/celeb_{{USERNAME}}",
+							"raw": "{{APIURL}}/profiles/celeb{{USERNAME}}",
 							"host": [
 								"{{APIURL}}"
 							],
 							"path": [
 								"profiles",
-								"celeb_{{USERNAME}}"
+								"celeb{{USERNAME}}"
 							]
 						}
 					},
@@ -1995,13 +1995,13 @@
 							"raw": "{\"user\":{\"email\":\"{{EMAIL}}\"}}"
 						},
 						"url": {
-							"raw": "{{APIURL}}/profiles/celeb_{{USERNAME}}/follow",
+							"raw": "{{APIURL}}/profiles/celeb{{USERNAME}}/follow",
 							"host": [
 								"{{APIURL}}"
 							],
 							"path": [
 								"profiles",
-								"celeb_{{USERNAME}}",
+								"celeb{{USERNAME}}",
 								"follow"
 							]
 						}
@@ -2061,13 +2061,13 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{APIURL}}/profiles/celeb_{{USERNAME}}/follow",
+							"raw": "{{APIURL}}/profiles/celeb{{USERNAME}}/follow",
 							"host": [
 								"{{APIURL}}"
 							],
 							"path": [
 								"profiles",
-								"celeb_{{USERNAME}}",
+								"celeb{{USERNAME}}",
 								"follow"
 							]
 						}
