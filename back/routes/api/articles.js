@@ -29,6 +29,42 @@ router.param('comment', function (req, res, next, id) {
   }).catch(next);
 });
 
+router.get('/', auth.optional, function (req, res, next) {
+  var query = {};
+  var limit = 20;
+  var offset = 0;
+
+  if (typeof req.query.limit !== 'undefined') {
+    limit = req.query.limit;
+  }
+
+  if (typeof req.query.offset !== 'undefined') {
+    offset = req.query.offset;
+  }
+
+  return Promise.all([
+    Article.find(query)
+      .limit(Number(limit))
+      .skip(Number(offset))
+      .sort({ createdAt: 'desc' })
+      .populate('author')
+      .exec(),
+    Article.count(query).exec(),
+    req.payload ? User.findById(req.payload.id) : null,
+  ]).then(function (results) {
+    var articles = results[0];
+    var articlesCount = results[1];
+    var user = results[2];
+
+    return res.json({
+      articles: articles.map(function (article) {
+        return article.toJSONFor(user);
+      }),
+      articlesCount: articlesCount
+    });
+  }).catch(next);
+});
+
 router.post('/', auth.required, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     if (!user) { return res.sendStatus(401); }
