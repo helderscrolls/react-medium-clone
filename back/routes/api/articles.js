@@ -32,6 +32,7 @@ router.post('/', auth.required, function (req, res, next) {
   }).catch(next);
 });
 
+
 // return a article
 router.get('/:article', auth.optional, function (req, res, next) {
   Promise.all([
@@ -39,7 +40,7 @@ router.get('/:article', auth.optional, function (req, res, next) {
     req.article.populate('author').execPopulate()
   ]).then(function (results) {
     var user = results[0];
-
+    
     return res.json({ article: req.article.toJSONFor(user) });
   }).catch(next);
 });
@@ -51,15 +52,15 @@ router.put('/:article', auth.required, function (req, res, next) {
       if (typeof req.body.article.title !== 'undefined') {
         req.article.title = req.body.article.title;
       }
-
+      
       if (typeof req.body.article.description !== 'undefined') {
         req.article.description = req.body.article.description;
       }
-
+      
       if (typeof req.body.article.body !== 'undefined') {
         req.article.body = req.body.article.body;
       }
-
+      
       req.article.save().then(function (article) {
         return res.json({ article: article.toJSONFor(user) });
       }).catch(next);
@@ -80,6 +81,21 @@ router.delete('/:article', auth.required, function (req, res, next) {
       return res.sendStatus(403);
     }
   });
+});
+
+//Favorite an article
+router.post('/:article/favorite', auth.required, function (req, res, next) {
+  var articleId = req.article._id;
+
+  User.findById(req.payload.id).then(function (user) {
+    if (!user) { return res.sendStatus(401); }
+
+    return user.favorite(articleId).then(function () {
+      return req.article.updateFavoriteCount().then(function (article) {
+        return res.json({ article: article.toJSONFor(user) });
+      });
+    });
+  }).catch(next);
 });
 
 module.exports = router;
