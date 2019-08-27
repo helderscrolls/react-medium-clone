@@ -17,6 +17,16 @@ router.param('article', function (req, res, next, slug) {
     }).catch(next);
 });
 
+router.param('comment', function(req, res, next, id) {
+  Comment.findById(id).then(function (comment) {
+    if(!comment) { return res.sendStatus(404); }
+
+    req.comment = comment;
+
+    return next();
+  }).catch(next);
+});
+
 router.post('/', auth.required, function (req, res, next) {
   User.findById(req.payload.id).then(function (user) {
     if (!user) { return res.sendStatus(401); }
@@ -152,5 +162,7 @@ router.get('/:article/comments', auth.optional, function (req, res, next) {
     });
   }).catch(next);
 });
+
+
 
 module.exports = router;
