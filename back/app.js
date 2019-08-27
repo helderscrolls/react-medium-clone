@@ -9,13 +9,16 @@ var fs = require('fs'),
     passport = require('passport'),
     errorhandler = require('errorhandler'),
     mongoose = require('mongoose');
+    
 
 var isProduction = process.env.NODE_ENV === 'production';
 
+var cors = require('cors');
 // Create global app object
 var app = express();
 
-app.use(cors());
+app.options('*', cors());
+app.use(cors({ origin: 'http://localhost:5000' }));
 
 // Normal express config defaults
 app.use(require('morgan')('dev'));
