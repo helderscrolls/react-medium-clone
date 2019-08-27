@@ -54,7 +54,7 @@ UserSchema.methods.toProfileJSONFor = function (user) {
     username: this.username,
     bio: this.bio,
     image: this.image || 'https://static.productionready.io/images/smiley-cyrus.jpg',
-    following: false // we'll implement following functionality in a few chapters :)
+    following: user ? user.isFollowing(this._id) : false
   };
 };
 
