@@ -43,4 +43,14 @@ ArticleSchema.methods.toJSONFor = function (user) {
   };
 };
 
+ArticleSchema.methods.updateFavoriteCount = function () {
+  var article = this;
+
+  return User.count({ favorites: { $in: [article._id] } }).then(function () {
+    article.favoritesCount = count;
+
+    return article.save();
+  });
+};
+
 mongoose.model('Article', ArticleSchema);
