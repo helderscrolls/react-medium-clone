@@ -18,7 +18,7 @@ var cors = require('cors');
 var app = express();
 
 app.options('*', cors());
-app.use(cors({ origin: 'http://localhost:5000' }));
+app.use(cors({ origin: 'http://localhost:4100' }));
 
 // Normal express config defaults
 app.use(require('morgan')('dev'));
