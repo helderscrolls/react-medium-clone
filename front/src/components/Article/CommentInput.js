@@ -1,13 +1,14 @@
 import React from 'react';
 import agent from '../../agent';
 import { connect } from 'react-redux';
+import { ADD_COMMENT } from '../../constants/actionTypes';
 
 const mapDispatchToProps = dispatch => ({
   onSubmit: payload =>
-    dispatch({ type: 'ADD_COMMENT', payload })
+    dispatch({ type: ADD_COMMENT, payload })
 });
 
-class CommentInput extends React.Component {
+class CommentInput extends React.PureComponent {
   constructor() {
     super();
     this.state = {
@@ -40,8 +41,8 @@ class CommentInput extends React.Component {
         </div>
         <div className="card-footer">
           <img
-            src={this.props.currentUser.image || ''}
-            className="comment-author-img" 
+            src={this.props.currentUser.image}
+            className="comment-author-img"
             alt={this.props.currentUser.username} />
           <button
             className="btn btn-sm btn-primary"
@@ -54,4 +55,4 @@ class CommentInput extends React.Component {
   }
 }
 
-export default connect(() => ({}), mapDispatchToProps)(CommentInput);
+export default connect(() => ({}), mapDispatchToProps)(React.memo(CommentInput));
